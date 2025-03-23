@@ -51,7 +51,7 @@ back-management-system/
 
 ### Prerequisites
 
-- Java JDK 8 or above
+- Java JDK 21 or above
 - Maven 3.6+
 - Any Java IDE (IntelliJ, Eclipse, NetBeans, etc.)
 
