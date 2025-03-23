@@ -89,8 +89,12 @@ mvn test
 
 ## 👥 Authors
 
-- **Your Name** (jr.)
-- [Other Contributors]
+- 6531503201	Nattawat Nattachanasit
+- 6631501041	Tanakrit Somboon
+- 6431503089	Thanitsara Umpondol
+- 6731503117	Vachira Loyweaha
+- 6631503129	Sai Shang Hlang
+- 6531503182	Shwe Sin Tun
 
 ## 📄 License
 
