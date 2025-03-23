@@ -59,7 +59,7 @@ back-management-system/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/back-management-system.git
+   git clone https://github.com/jemiezler/back-management-system.git
    cd back-management-system
    ```
 
