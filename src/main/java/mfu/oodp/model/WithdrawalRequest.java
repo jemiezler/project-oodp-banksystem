@@ -1,20 +1,20 @@
 package mfu.oodp.model;
 
 public class WithdrawalRequest {
-    private String clientName; // ชื่อของลูกค้า
+    private String id; // รหัสของลูกค้า
     private double amount; // จำนวนเงินที่ต้องการถอน
     private String status; // สถานะของคำขอถอนเงิน (Pending, Approved, Rejected)
     
     // Constructor
 
-    public WithdrawalRequest(String clientName, double amount) {
-        this.clientName = clientName;
+    public WithdrawalRequest(String id, double amount) {
+        this.id = id;
         this.amount = amount;
         this.status = "Pending"; // ค่าสถานะเริ่มต้นคือ Pending
     }
 
-    public String getClientName() {
-        return clientName;
+    public String getId() {
+        return id;
     }
 
     public double getAmount() {
@@ -35,6 +35,6 @@ public class WithdrawalRequest {
 
     @Override
     public String toString() {
-        return "Client: " + clientName + ", Amount: " + amount + ", Status: " + status;
+        return "Client ID: " + id + ", Amount: " + amount + ", Status: " + status;
     }
 }
