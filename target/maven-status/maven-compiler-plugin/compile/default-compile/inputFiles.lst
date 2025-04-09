@@ -1,1 +1,13 @@
-/workspaces/project-oodp-banksystem/src/main/java/mfu/oodp/Main.java
+/home/jemiezler/Dev/project-oodp-banksystem/src/main/java/mfu/oodp/Main.java
+/home/jemiezler/Dev/project-oodp-banksystem/src/main/java/mfu/oodp/config/DatabaseConfig.java
+/home/jemiezler/Dev/project-oodp-banksystem/src/main/java/mfu/oodp/model/Account.java
+/home/jemiezler/Dev/project-oodp-banksystem/src/main/java/mfu/oodp/model/Client.java
+/home/jemiezler/Dev/project-oodp-banksystem/src/main/java/mfu/oodp/model/WithdrawalRequest.java
+/home/jemiezler/Dev/project-oodp-banksystem/src/main/java/mfu/oodp/service/BankService.java
+/home/jemiezler/Dev/project-oodp-banksystem/src/main/java/mfu/oodp/view/MainFrame.java
+/home/jemiezler/Dev/project-oodp-banksystem/src/main/java/mfu/oodp/view/components/PerformanceChartPanel.java
+/home/jemiezler/Dev/project-oodp-banksystem/src/main/java/mfu/oodp/view/components/SalesByCountryPanel.java
+/home/jemiezler/Dev/project-oodp-banksystem/src/main/java/mfu/oodp/view/components/Sidebar.java
+/home/jemiezler/Dev/project-oodp-banksystem/src/main/java/mfu/oodp/view/components/StatCard.java
+/home/jemiezler/Dev/project-oodp-banksystem/src/main/java/mfu/oodp/view/components/TeamPanel.java
+/home/jemiezler/Dev/project-oodp-banksystem/src/main/java/mfu/oodp/view/components/TopBar.java
