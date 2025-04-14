@@ -85,5 +85,17 @@ public class Transaction {
     public void setAgentId(Agent agentId) {
         this.agentId = agentId;
     }
+
+    private Account fromAccount; // Ensure this field exists in the class
+
+    public Account getFromAccount() {
+        return fromAccount;
+    }
     
+    private Account toAccount; // Assuming this field exists
+
+    // Getter for toAccount
+    public Account getToAccount() {
+        return toAccount;
+    }
 }

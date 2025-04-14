@@ -35,10 +35,11 @@ public class AdminDashboardView extends JXFrame {
         add(viewTxBtn);
         add(logoutBtn);
 
+        // ✅ Pass the currentAgent's username to AccountCreationView
         registerAgentBtn.addActionListener(e -> new AgentRegistrationView(agentController).setVisible(true));
         registerClientBtn.addActionListener(e -> new ClientRegistrationView(clientController).setVisible(true));
-        createAccountBtn.addActionListener(e -> new AccountCreationView(accountController).setVisible(true));
-        makeTxBtn.addActionListener(e -> new TransactionView(txController, currentAgent).setVisible(true)); // ✅ Fix here
+        createAccountBtn.addActionListener(e -> new AccountCreationView(accountController, currentAgent.getUsername()).setVisible(true)); // ✅ Fix here
+        makeTxBtn.addActionListener(e -> new TransactionView(txController, currentAgent).setVisible(true));
         viewTxBtn.addActionListener(e -> new TransactionHistoryView(txController).setVisible(true));
         logoutBtn.addActionListener(e -> {
             dispose();
@@ -46,4 +47,3 @@ public class AdminDashboardView extends JXFrame {
         });
     }
 }
-

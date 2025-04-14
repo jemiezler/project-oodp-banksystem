@@ -37,6 +37,6 @@
         </dependency>
         
     </dependencies>
-
+  <!-- run :  mvn exec:java -Dexec.mainClass="mfu.oodp.MainApp" -->
 
 </project>

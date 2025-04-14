@@ -18,7 +18,7 @@ public class MainApp {
         AgentController agentController = new AgentController(agentService);
         ClientController clientController = new ClientController(clientService);
         AccountController accountController = new AccountController(accountService);
-        TransactionController txController = new TransactionController(transactionService);
+        TransactionController txController = new TransactionController(transactionService, accountService); // Fix here
 
         // ✅ Launch Login View (pass all controllers)
         SwingUtilities.invokeLater(() -> {

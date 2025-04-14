@@ -8,6 +8,7 @@ import java.util.*;
 public class ClientService {
 
     private final Map<UUID, Client> clientDatabase = new HashMap<>();
+    private final Map<String, Client> clients = new HashMap<>(); // Map of Account ID to Client
 
     public Client registerClient(String email, String firstName, String lastName, Timestamp dob, String phone, String address) {
         UUID id = UUID.randomUUID();
@@ -28,4 +29,15 @@ public class ClientService {
     public boolean deleteClient(UUID id) {
         return clientDatabase.remove(id) != null;
     }
+
+     // Retrieve client by Account ID
+     public Client getClientByAccountId(String accountId) {
+        return clients.get(accountId);
+    }
+
+    // Add a client to the service
+    public void addClient(String accountId, Client client) {
+        clients.put(accountId, client);
+    }
 }
+

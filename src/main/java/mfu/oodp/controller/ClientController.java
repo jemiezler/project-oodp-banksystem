@@ -29,4 +29,10 @@ public class ClientController {
     public boolean deleteClient(UUID id) {
         return clientService.deleteClient(id);
     }
+
+     // Retrieve client by Account ID
+     public Client getClientByAccountId(String accountId) {
+        return clientService.getClientByAccountId(accountId);
+    }
 }
+

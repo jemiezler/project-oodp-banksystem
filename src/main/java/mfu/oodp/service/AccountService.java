@@ -13,7 +13,8 @@ public class AccountService {
         accountDatabase.put(accountId, account);
         return account;
     }
-
+    
+    // Retrieve an account by ID
     public Account getAccount(String accountId) {
         return accountDatabase.get(accountId);
     }
@@ -30,4 +31,19 @@ public class AccountService {
     public List<Account> getAllAccounts() {
         return new ArrayList<>(accountDatabase.values());
     }
+
+    private final Map<String, Account> accounts = new HashMap<>();
+
+    // Add an account to the service
+    public void addAccount(Account account) {
+        accounts.put(account.getAccountId(), account);
+    }
+
+    
+
+  
+   
+    
 }
+
+

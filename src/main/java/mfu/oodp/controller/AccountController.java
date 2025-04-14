@@ -27,4 +27,6 @@ public class AccountController {
     public List<Account> getAllAccounts() {
         return accountService.getAllAccounts();
     }
+
+    
 }

@@ -15,10 +15,10 @@ public class DashboardView extends JXFrame {
     private final TransactionController txController;
 
     public DashboardView(Agent agent,
-            AgentController agentController,
-            ClientController clientController,
-            AccountController accountController,
-            TransactionController txController) {
+                         AgentController agentController,
+                         ClientController clientController,
+                         AccountController accountController,
+                         TransactionController txController) {
 
         super("Dashboard - Welcome " + agent.getFirstName());
         this.agent = agent;
@@ -35,10 +35,11 @@ public class DashboardView extends JXFrame {
         JButton txBtn = new JButton("Make Transaction");
         JButton searchClientBtn = new JButton("🔍 Search Client");
         JButton logoutBtn = new JButton("Logout");
-        searchClientBtn.addActionListener(e -> new ClientSearchView(clientController).setVisible(true));
 
-        accountBtn.addActionListener(e -> new AccountCreationView(accountController).setVisible(true));
+        // ✅ Pass the agent's username to AccountCreationView
+        accountBtn.addActionListener(e -> new AccountCreationView(accountController, agent.getUsername()).setVisible(true));
 
+        searchClientBtn.addActionListener(e -> new ClientSearchView(clientController,accountController).setVisible(true));
         txBtn.addActionListener(e -> new TransactionView(txController, agent).setVisible(true));
 
         logoutBtn.addActionListener(e -> {
