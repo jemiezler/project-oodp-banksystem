@@ -14,7 +14,7 @@ public class ClientSearchView extends JXFrame {
     private final AccountController accountController;
 
     public ClientSearchView(ClientController clientController, AccountController accountController) {
-        super("🔍 Search Client");
+        super("🔍 Search Clients");
         this.clientController = clientController;
         this.accountController = accountController;
 
