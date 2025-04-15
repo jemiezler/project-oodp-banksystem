@@ -65,21 +65,28 @@ public class TransactionService {
         try (Connection conn = DatabaseConfig.getConnection(); Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
+                Account from = accountService.getAccount(rs.getString("account_id_from"));
+                Account to = accountService.getAccount(rs.getString("account_id_to"));
+                Agent agent = new AgentService().getAgentById(UUID.fromString(rs.getString("agent_id")));
+    
                 result.add(new Transaction(
                         rs.getString("transaction_id"),
                         rs.getTimestamp("transaction_time"),
-                        accountService.getAccount(rs.getString("account_id_from")),
-                        accountService.getAccount(rs.getString("account_id_to")),
+                        from,
+                        to,
                         rs.getDouble("amount"),
                         TransactionType.valueOf(rs.getString("transaction_type")),
-                        null // agent loading skipped for simplicity
+                        agent
                 ));
+                System.out.println(result);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
     }
+    
 
     public List<Transaction> getTransactionsByAccount(String accountId) {
         List<Transaction> result = new ArrayList<>();

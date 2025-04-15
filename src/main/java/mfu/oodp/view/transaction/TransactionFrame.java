@@ -4,7 +4,10 @@ import mfu.oodp.model.Agent.Agent;
 import mfu.oodp.model.Transaction.Transaction;
 import mfu.oodp.model.Transaction.Transaction.TransactionType;
 import mfu.oodp.service.AccountService;
+import mfu.oodp.service.AgentService;
 import mfu.oodp.service.TransactionService;
+import mfu.oodp.view.session.SessionContext;
+
 import org.jdesktop.swingx.JXButton;
 import org.jdesktop.swingx.JXFrame;
 import org.jdesktop.swingx.JXLabel;
@@ -111,8 +114,14 @@ public class TransactionFrame extends JXFrame {
                 String to = toField.getText().isBlank() ? null : toField.getText();
                 double amount = Double.parseDouble(amountField.getText());
                 TransactionType type = (TransactionType) typeBox.getSelectedItem();
-                Agent dummyAgent = new Agent(UUID.randomUUID(), "sys", "", "sys@example.com", "System", "Agent", new Timestamp(System.currentTimeMillis()), null, true);
-                Transaction tx = transactionService.createTransaction(UUID.randomUUID().toString(), from, to, amount, type, dummyAgent);
+        
+                Agent agent = SessionContext.currentAgent; // ✅ ใช้ Agent ที่ Login อยู่
+                Transaction tx = transactionService.createTransaction(UUID.randomUUID().toString(), from, to, amount, type, agent);
+        
+                // ✅ Log
+                AgentService agentService = new AgentService();
+                agentService.logAction(agent, "CREATE_TRANSACTION", "Created transaction: " + tx.getTransactionId());
+        
                 JOptionPane.showMessageDialog(this, "Transaction successful: " + tx.getTransactionId());
                 dialog.dispose();
                 loadTransactions();
@@ -121,7 +130,7 @@ public class TransactionFrame extends JXFrame {
                 JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
             }
         });
-
+        
         dialog.add(new JLabel());
         dialog.add(submitBtn);
         dialog.setVisible(true);
@@ -152,6 +161,11 @@ public class TransactionFrame extends JXFrame {
                 double newAmount = Double.parseDouble(amountField.getText());
                 TransactionType newType = (TransactionType) typeBox.getSelectedItem();
                 transactionService.updateTransaction(transactionId, newAmount, newType);
+        
+                // ✅ Log
+                AgentService agentService = new AgentService();
+                agentService.logAction(SessionContext.currentAgent, "UPDATE_TRANSACTION", "Updated transaction: " + transactionId);
+        
                 JOptionPane.showMessageDialog(this, "Transaction updated.");
                 loadTransactions();
             } catch (Exception ex) {
@@ -159,6 +173,7 @@ public class TransactionFrame extends JXFrame {
                 JOptionPane.showMessageDialog(this, "Error updating transaction: " + ex.getMessage());
             }
         }
+        
     }
 
     private void deleteSelectedTransaction() {
@@ -171,8 +186,14 @@ public class TransactionFrame extends JXFrame {
         int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete transaction " + transactionId + "?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             transactionService.deleteTransaction(transactionId);
+        
+            // ✅ Log
+            AgentService agentService = new AgentService();
+            agentService.logAction(SessionContext.currentAgent, "DELETE_TRANSACTION", "Deleted transaction: " + transactionId);
+        
             JOptionPane.showMessageDialog(this, "Transaction deleted.");
             loadTransactions();
         }
+        
     }
 }
