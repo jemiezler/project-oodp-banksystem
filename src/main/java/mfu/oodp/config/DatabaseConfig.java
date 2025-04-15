@@ -6,64 +6,91 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseConfig {
-    private static final String DB_URL = "jdbc:h2:./bankdb;AUTO_SERVER=TRUE";
-    private static final String USER = "sa";
-    private static final String PASS = "";
+    private static final String DB_URL = "jdbc:sqlite:banking.db";
 
     static {
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement()) {
-
-            // 🔸 Table: clients
-            stmt.execute("CREATE TABLE IF NOT EXISTS clients (" +
-                    "id UUID PRIMARY KEY," +
-                    "email VARCHAR(255) NOT NULL," +
-                    "first_name VARCHAR(100) NOT NULL," +
-                    "last_name VARCHAR(100) NOT NULL," +
-                    "date_of_birth TIMESTAMP," +
-                    "phone_number VARCHAR(50)," +
-                    "address VARCHAR(255)," +
-                    "created_at TIMESTAMP)");
-
-            // 🔸 Table: agents
-            stmt.execute("CREATE TABLE IF NOT EXISTS agents (" +
-                    "id UUID PRIMARY KEY," +
-                    "username VARCHAR(100) UNIQUE NOT NULL," +
-                    "password VARCHAR(255) NOT NULL," +
-                    "email VARCHAR(255) NOT NULL," +
-                    "first_name VARCHAR(100)," +
-                    "last_name VARCHAR(100)," +
-                    "created_at TIMESTAMP," +
-                    "last_login TIMESTAMP," +
-                    "is_active BOOLEAN)");
-
-            // 🔸 Table: accounts
-            stmt.execute("CREATE TABLE IF NOT EXISTS accounts (" +
-                    "account_id VARCHAR(50) PRIMARY KEY," +
-                    "account_name VARCHAR(100) NOT NULL," +
-                    "account_type VARCHAR(20) NOT NULL," +
-                    "balance DOUBLE NOT NULL," +
-                    "account_status VARCHAR(20) NOT NULL)");
-
-            // 🔸 Table: transactions
-            stmt.execute("CREATE TABLE IF NOT EXISTS transactions (" +
-                    "transaction_id VARCHAR(50) PRIMARY KEY," +
-                    "transaction_time TIMESTAMP NOT NULL," +
-                    "account_id_from VARCHAR(50)," +
-                    "account_id_to VARCHAR(50)," +
-                    "amount DOUBLE NOT NULL," +
-                    "transaction_type VARCHAR(20) NOT NULL," +
-                    "agent_id UUID," +
-                    "FOREIGN KEY (account_id_from) REFERENCES accounts(account_id)," +
-                    "FOREIGN KEY (account_id_to) REFERENCES accounts(account_id)," +
-                    "FOREIGN KEY (agent_id) REFERENCES agents(id))");
-
-        } catch (SQLException e) {
-            throw new RuntimeException("❌ Failed to initialize database", e);
-        }
+        initializeDatabase();
     }
 
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DB_URL, USER, PASS);
+        return DriverManager.getConnection(DB_URL);
+    }
+
+    private static void initializeDatabase() {
+        try (Connection conn = getConnection(); Statement stmt = conn.createStatement()) {
+
+            // 🔸 clients
+            stmt.execute("""
+                CREATE TABLE IF NOT EXISTS clients (
+                    id TEXT PRIMARY KEY,
+                    email TEXT NOT NULL,
+                    first_name TEXT NOT NULL,
+                    last_name TEXT NOT NULL,
+                    date_of_birth TIMESTAMP,
+                    phone_number TEXT,
+                    address TEXT,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+            """);
+
+            // 🔸 agents
+            stmt.execute("""
+                CREATE TABLE IF NOT EXISTS agents (
+                    id TEXT PRIMARY KEY,
+                    username TEXT UNIQUE NOT NULL,
+                    password TEXT NOT NULL,
+                    email TEXT NOT NULL,
+                    first_name TEXT,
+                    last_name TEXT,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    last_login TIMESTAMP,
+                    is_active BOOLEAN DEFAULT 1
+                )
+            """);
+
+            // 🔸 agent_action_logs
+            stmt.execute("""
+                CREATE TABLE IF NOT EXISTS agent_action_logs (
+                    id TEXT PRIMARY KEY,
+                    agent_id TEXT NOT NULL,
+                    action TEXT NOT NULL,
+                    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    description TEXT,
+                    FOREIGN KEY (agent_id) REFERENCES agents(id)
+                )
+            """);
+
+            // 🔸 accounts
+            stmt.execute("""
+                CREATE TABLE IF NOT EXISTS accounts (
+                    account_id TEXT PRIMARY KEY,
+                    account_name TEXT NOT NULL,
+                    account_type TEXT NOT NULL,
+                    balance REAL NOT NULL,
+                    account_status TEXT NOT NULL
+                )
+            """);
+
+            // 🔸 transactions
+            stmt.execute("""
+                CREATE TABLE IF NOT EXISTS transactions (
+                    transaction_id TEXT PRIMARY KEY,
+                    transaction_time TIMESTAMP NOT NULL,
+                    account_id_from TEXT,
+                    account_id_to TEXT,
+                    amount REAL NOT NULL,
+                    transaction_type TEXT NOT NULL,
+                    agent_id TEXT,
+                    FOREIGN KEY (account_id_from) REFERENCES accounts(account_id),
+                    FOREIGN KEY (account_id_to) REFERENCES accounts(account_id),
+                    FOREIGN KEY (agent_id) REFERENCES agents(id)
+                )
+            """);
+
+            System.out.println("✅ SQLite DB Initialized: banking.db");
+
+        } catch (SQLException e) {
+            throw new RuntimeException("❌ Failed to initialize SQLite database", e);
+        }
     }
 }

@@ -26,7 +26,9 @@ public class AccountController {
 
     public List<Account> getAllAccounts() {
         return accountService.getAllAccounts();
-    }
+    }  
 
-    
+    public boolean deleteAccount(String id) {
+        return accountService.deleteAccount(id);
+    }
 }
