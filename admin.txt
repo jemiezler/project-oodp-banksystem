@@ -1,0 +1,2 @@
+admin01,password123,admin01@example.com,John,Doe
+admin02,securepass,admin02@example.com,Jane,Smith

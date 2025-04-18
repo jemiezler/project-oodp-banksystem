@@ -1,15 +1,22 @@
 package mfu.oodp.config;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.UUID;
 
 public class DatabaseConfig {
     private static final String DB_URL = "jdbc:sqlite:banking.db";
+    private static final String ADMIN_FILE = "admin.txt";
 
     static {
         initializeDatabase();
+        insertSampleAdmins();
     }
 
     public static Connection getConnection() throws SQLException {
@@ -91,6 +98,42 @@ public class DatabaseConfig {
 
         } catch (SQLException e) {
             throw new RuntimeException("❌ Failed to initialize SQLite database", e);
+        }
+    }
+
+    private static void insertSampleAdmins() {
+        try (Connection conn = getConnection();
+             PreparedStatement pstmt = conn.prepareStatement("""
+                INSERT OR IGNORE INTO agents (id, username, password, email, first_name, last_name)
+                VALUES (?, ?, ?, ?, ?, ?)
+             """);
+             BufferedReader reader = new BufferedReader(new FileReader(ADMIN_FILE))) {
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.strip().split(",");
+                if (parts.length == 5) {
+                    String id = UUID.randomUUID().toString();
+                    String username = parts[0];
+                    String password = parts[1];
+                    String email = parts[2];
+                    String firstName = parts[3];
+                    String lastName = parts[4];
+
+                    pstmt.setString(1, id);
+                    pstmt.setString(2, username);
+                    pstmt.setString(3, password);
+                    pstmt.setString(4, email);
+                    pstmt.setString(5, firstName);
+                    pstmt.setString(6, lastName);
+                    pstmt.executeUpdate();
+                }
+            }
+
+            System.out.println("✅ Sample admins inserted from " + ADMIN_FILE);
+
+        } catch (IOException | SQLException e) {
+            System.err.println("⚠️ Failed to insert sample admins: " + e.getMessage());
         }
     }
 }
