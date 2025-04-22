@@ -1,5 +1,6 @@
 package mfu.oodp.view.transaction;
 
+import mfu.oodp.config.TransactionBackupUtil;
 import mfu.oodp.model.Agent.Agent;
 import mfu.oodp.model.Transaction.Transaction;
 import mfu.oodp.model.Transaction.Transaction.TransactionType;
@@ -57,7 +58,13 @@ public class TransactionFrame extends JXFrame {
         createBtn.addActionListener(e -> openCreateTransactionDialog());
         editBtn.addActionListener(e -> openEditTransactionDialog());
         deleteBtn.addActionListener(e -> deleteSelectedTransaction());
-        refreshBtn.addActionListener(e -> loadTransactions());
+        refreshBtn.addActionListener(e -> {
+            loadTransactions();
+            List<Transaction> transactions = transactionService.getTransactionHistory();
+            TransactionBackupUtil.backupTransactionsToFile(transactions, "backup_transactions.csv");
+            JOptionPane.showMessageDialog(this, "✅ Transactions reloaded & backup saved to backup_transactions.csv");
+        });
+        
 
         bottomPanel.add(createBtn);
         bottomPanel.add(editBtn);
