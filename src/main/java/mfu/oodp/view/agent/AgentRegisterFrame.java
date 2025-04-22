@@ -50,13 +50,23 @@ public class AgentRegisterFrame extends JXFrame {
         };
 
         for (int i = 0; i < labels.length; i++) {
+            labels[i].setFont(new Font("Segoe UI", Font.BOLD, 16));
+        
+            // 1. ใส่ label
             gbc.gridy = i;
             gbc.gridx = 0;
+            gbc.gridwidth = 1;
+            gbc.weightx = 0;
             formPanel.add(labels[i], gbc);
+        
+            // 2. ใส่ input field
             gbc.gridx = 1;
+            gbc.gridwidth = 2; // ✅ ยืดกว้างเต็มแถว!
+            gbc.weightx = 1.0; // ✅ อนุญาตให้ขยาย
+            gbc.fill = GridBagConstraints.HORIZONTAL;
             formPanel.add(fields[i], gbc);
         }
-
+        
         JXButton registerBtn = new JXButton("✅ Register");
         registerBtn.setFont(new Font("Segoe UI", Font.BOLD, 16));
         registerBtn.setBackground(new Color(40, 167, 69));
