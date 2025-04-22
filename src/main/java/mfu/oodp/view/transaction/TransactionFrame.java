@@ -60,9 +60,7 @@ public class TransactionFrame extends JXFrame {
         deleteBtn.addActionListener(e -> deleteSelectedTransaction());
         refreshBtn.addActionListener(e -> {
             loadTransactions();
-            List<Transaction> transactions = transactionService.getTransactionHistory();
-            TransactionBackupUtil.backupTransactionsToFile(transactions, "backup_transactions.csv");
-            JOptionPane.showMessageDialog(this, "✅ Transactions reloaded & backup saved to backup_transactions.csv");
+            
         });
         
 
@@ -78,8 +76,10 @@ public class TransactionFrame extends JXFrame {
     }
 
     private void loadTransactions() {
-        tableModel.setRowCount(0);
         List<Transaction> transactions = transactionService.getTransactionHistory();
+        TransactionBackupUtil.backupTransactionsToFile(transactions, "backup_transactions.csv");
+        // JOptionPane.showMessageDialog(this, "✅ Transactions reloaded & backup saved to backup_transactions.csv");
+        tableModel.setRowCount(0);
 
         for (Transaction tx : transactions) {
             String from = tx.getFromAccount() != null ? tx.getFromAccount().getAccountId() : "-";
